@@ -20,6 +20,14 @@
     <div class="row">
       <div class="col-md-4 p-4">
         <OrderBill />
+        <OrderBill />
+        <OrderBill />
+        <OrderBill />
+        <OrderBill />
+        <OrderBill />
+        <OrderBill />
+        <OrderBill />
+        <OrderBill />
         <div class="text-end">
           <button class="btn btn-light" style="min-width: 120px;">Checkout</button>
         </div>
@@ -73,14 +81,27 @@
 </template>
 
 <style>
-  .container{
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('./assets/alphaPos-bg.jpg') no-repeat center center;
+    background-size: cover;
+  }
+
+  .container {
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 3px;
   }
 
-  .col-md-4, .col-md-8 {
-    outline: 1px solid steelblue;
-    min-height: 600px;
+  .container .row {
+    max-height: 600px;
+  }
+
+  .col-md-4 {
+    overflow-y: scroll;
+    max-height: 580px;
   }
 
   .ice input[type="radio"],
