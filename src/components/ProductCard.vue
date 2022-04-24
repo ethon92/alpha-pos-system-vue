@@ -1,6 +1,9 @@
 <script setup>
-  defineProps({
-    products: Array
+  const props = defineProps({
+    products: {
+      type: Array,
+      required: true
+    }
   })
 </script>
 

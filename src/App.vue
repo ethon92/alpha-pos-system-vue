@@ -1,6 +1,8 @@
 <script setup>
   import OrderBill from './components/OrderBill.vue';
   import ProductCard from './components/ProductCard.vue'
+  import VolumePills from './components/VolumePills.vue';
+  import { reactive } from 'vue'
 
   const products = [
     'Black Tea', 
@@ -12,6 +14,71 @@
     'Lemon Green Tea',
     'Matcha Latte'
   ]
+
+  const volumeChoice = reactive([{
+    name: 'Ice',
+    labelOutline: 'btn-outline-primary',
+    choice:  [{
+      value: 'No Ice',
+      choiceName: 'No',
+      isChecked: false
+    },{
+      value: 'Less Ice',
+      choiceName: 'Less',
+      isChecked: false
+    },{
+      value: 'Regular Ice',
+      choiceName: 'Regular',
+      isChecked: true
+    }]
+  },{
+    name: 'Sugar',
+    labelOutline: 'btn-outline-info',
+    choice: [{
+      value: 'No Sugar',
+      choiceName: 'No',
+      isChecked: false
+    },{
+      value: 'A Little Sugar',
+      choiceName: 'A Little',
+      isChecked: false
+    },{
+      value: 'Half Sugar',
+      choiceName: 'Half',
+      isChecked: false
+    },{
+      value: 'Less Sugar',
+      choiceName: 'Less',
+      isChecked: false
+    },{
+      value: 'Regular Sugar',
+      choiceName: 'Regular',
+      isChecked: true
+    }]
+  }])
+
+  function handleChecked(e) {
+    const targetValue = e.target.value
+    const classList = e.target.parentElement.classList
+
+    if (classList.contains('btn-outline-primary')) {
+      volumeChoice[0].choice.filter( item => {
+        if (item.value === targetValue) {
+          item.isChecked = true
+        } else {
+          item.isChecked = false
+        }
+      })
+    } else if (classList.contains('btn-outline-info')) {
+      volumeChoice[1].choice.filter( item => {
+        if (item.value === targetValue) {
+          item.isChecked = true
+        } else {
+          item.isChecked = false
+        }
+      })
+    }
+  }
 </script>
 
 <template>
@@ -19,13 +86,6 @@
     <h2 class="text-center text-light pt-4">Alpha Pos System</h2>
     <div class="row">
       <div class="col-md-4 p-4">
-        <OrderBill />
-        <OrderBill />
-        <OrderBill />
-        <OrderBill />
-        <OrderBill />
-        <OrderBill />
-        <OrderBill />
         <OrderBill />
         <OrderBill />
         <div class="text-end">
@@ -39,38 +99,10 @@
           </div>
         </section>
         <section class="ice p-2">
-          <label class="d-block text-light mb-2">Ice</label>
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-outline-primary">
-              <input type="radio" name="ice" value="No Ice" />No
-            </label>
-            <label class="btn btn-outline-primary">
-              <input type="radio" name="ice" value="Less Ice" />Less
-            </label>
-            <label class="btn btn-outline-primary active">
-              <input type="radio" name="ice" value="Regular Ice" checked />Regular
-            </label>
-          </div>
+          <VolumePills :choice="volumeChoice[0]" @after-checked="handleChecked"/>
         </section>
         <section class="sugar p-2">
-          <label class="d-block text-light mb-2">Sugar</label>
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-outline-info">
-              <input type="radio" name="sugar" value="No Sugar" />No
-            </label>
-            <label class="btn btn-outline-info">
-              <input type="radio" name="sugar" value="A Little Sugar" />A Little
-            </label>
-            <label class="btn btn-outline-info">
-              <input type="radio" name="sugar" value="Half Sugar" />Half
-            </label>
-            <label class="btn btn-outline-info">
-              <input type="radio" name="sugar" value="Less Sugar" />Less
-            </label>
-            <label class="btn btn-outline-info active">
-              <input type="radio" name="sugar" value="Regular Sugar" checked="checked" />Regular
-            </label>
-          </div>
+          <VolumePills :choice="volumeChoice[1]" @after-checked="handleChecked"/>
         </section>
         <div class="text-end mt-4">
           <div class="btn btn-light" style="min-width:120px;">Add</div>
@@ -104,8 +136,4 @@
     max-height: 580px;
   }
 
-  .ice input[type="radio"],
-  .sugar input[type="radio"] {
-    -webkit-appearance: none;
-  }
 </style>
