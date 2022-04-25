@@ -1,17 +1,31 @@
+<script setup>
+  const props = defineProps({
+    orderBills: Array
+  })
+
+
+  const emit = defineEmits(['passDeleteBill'])
+  function deleteBill(e) {
+    emit('passDeleteBill', e)
+  }
+
+</script>
+
+
 <template>
-  <div class="card mb-3">
+  <div class="card mb-3" v-for="bill in orderBills" :key="bill.id">
     <div class="card-body pt-3 pr-3">
-      <div class="text-end">
-        <span class="delete-drink">×</span>
+      <div class="text-end" @click="deleteBill">
+        <span class="delete-drink" :id="bill.id">×</span>
       </div>
-      <h6 class="card-title mb-1">Black Tea</h6>
-      <div class="card-text">Less Ice</div>
-      <div class="card-text">Half Sugar</div>
+      <h6 class="card-title mb-1">{{ bill.name }}</h6>
+      <div class="card-text">{{ bill.ice }}</div>
+      <div class="card-text">{{ bill.sugar }}</div>
     </div>
       
     <div class="card-footer text-end">
       <div class="card-text text-muted py-2">
-        $ <span>30</span>
+        $ <span>{{ bill.price }}</span>
       </div>
     </div>
   </div>

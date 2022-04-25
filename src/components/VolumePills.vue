@@ -19,7 +19,7 @@
     <label class="btn" 
       :class="[choice.labelOutline, { active: item.isChecked }]"
       v-for="item in choice.choice" 
-      :key="item.choiceName"
+      :key="item.id"
     >
       <input 
         type="radio" 
