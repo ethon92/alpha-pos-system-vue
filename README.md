@@ -22,7 +22,7 @@ cd alpha-pos-system-vue
 ```
 npm run dev
 ```
-4. 開啟瀏覽器輸入 http://localhost:8080 即可進入alpha-pos-system-vue
+4. 開啟瀏覽器輸入 http://localhost:3000 即可進入alpha-pos-system-vue
 
 ## Using Tools - 使用工具
 
