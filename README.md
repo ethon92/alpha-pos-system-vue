@@ -27,7 +27,7 @@ npm run dev
 ## Using Tools - 使用工具
 
 + 開發環境 - [Visual Studio Code](https://code.visualstudio.com/)
-+ 開發框架 - [Vue](https://vuejs.org/)
++ 開發框架 - [Vue3](https://vuejs.org/)
 
 ## Contributor - 專案開發人員
 
