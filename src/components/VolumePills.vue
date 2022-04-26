@@ -6,10 +6,10 @@
     }
   })
   
-  const emit = defineEmits(['afterChecked'])
+  const emits = defineEmits(['afterChecked'])
 
   function checkInput(e) {
-    emit('afterChecked', e)
+    emits('afterChecked', e)
   }
 </script>
 

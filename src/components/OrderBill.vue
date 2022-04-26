@@ -4,9 +4,10 @@
   })
 
 
-  const emit = defineEmits(['passDeleteBill'])
+  const emits = defineEmits(['passDeleteBill'])
+  
   function deleteBill(e) {
-    emit('passDeleteBill', e)
+    emits('passDeleteBill', e)
   }
 
 </script>

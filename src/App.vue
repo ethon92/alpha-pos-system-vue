@@ -1,8 +1,9 @@
 <script setup>
   import OrderBill from './components/OrderBill.vue';
-  import DrinkCard from './components/DrinkCard.vue'
+  import DrinkCard from './components/DrinkCard.vue';
   import VolumePills from './components/VolumePills.vue';
-  import { reactive, ref } from 'vue'
+  import CheckoutModal from './components/CheckoutModal.vue'
+  import { reactive, ref } from 'vue';
 
   const drinks = [
     { 
@@ -103,15 +104,18 @@
   const selectSugar = ref('Regular Sugar')
   const selectIce = ref('Regular Ice')
   const orderBills = ref([])
-  let id = 1
+  const total = ref(0)
+  const isShowModal = ref(false)
+  const id = ref(1)
 
+  // 控制VolumePills active以及所選擇的甜度冰塊的函式
   function handleChecked(e) {
     const targetValue = e.target.value
     const classList = e.target.parentElement.classList
     
     // 當選擇的是甜度的欄位時
     if (classList.contains('btn-outline-primary')) {
-      selectSugar.value = targetValue
+      selectIce.value = targetValue
       // 處理label active的狀態
       volumeChoice[0].choice.forEach( item => {
         if (item.value === targetValue) {
@@ -122,7 +126,7 @@
       })
       // 當選擇的是冰塊的欄位時
     } else if (classList.contains('btn-outline-info')) {
-      selectIce.value = targetValue
+      selectSugar.value = targetValue
       // 處理label active的狀態
       volumeChoice[1].choice.forEach( item => {
         if (item.value === targetValue) {
@@ -134,6 +138,7 @@
     }
   }
 
+  // 選擇飲料品名的函式
   function handleDrink(e) {
     const drinkName = e.target.value
 
@@ -146,21 +151,43 @@
     })
   }
 
+  // 刪除訂單的函式
   function handleDeleteBill(e) {
     const id = Number(e.target.id)
     orderBills.value = orderBills.value.filter( bill => bill.id !== id )
   }
 
+  // 新增訂單的函式
   function addBill() {
     if (!selectDrink.value) {
       alert('Please choose at least one item.')
       return
     }
-    const drink = new Drink(id, selectDrink.value, selectSugar.value, selectIce.value, selectDrinkPrice.value)
+
+    const drink = new Drink(id.value, selectDrink.value, selectSugar.value, selectIce.value, selectDrinkPrice.value)
     orderBills.value.unshift(drink)
-    id++
+    id.value++
   }
 
+  // 送出訂單的函式
+  function clearOrderBill() {
+    orderBills.value.forEach( bill => {
+      total.value += bill.price
+    })
+
+    isShowModal.value = true
+    orderBills.value = []
+  }
+
+  // 關閉Modal的函式
+  function handleSubmitModal(e) {
+    if (e.target) {
+      isShowModal.value = false
+      total.value = 0
+    }
+  }
+
+  // 飲料品項建構式
   function Drink (id, name, sugar, ice, price) {
     this.id = id
     this.name = name
@@ -177,10 +204,18 @@
       <div class="col-md-4 p-4">
         <OrderBill :order-bills="orderBills" @pass-delete-bill="handleDeleteBill"/>
         <div class="text-end">
-          <button class="btn btn-light" style="min-width: 120px;">Checkout</button>
+          <button 
+            class="btn btn-light" 
+            style="min-width: 120px;"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+            @click="clearOrderBill"
+          >
+            Checkout
+          </button>
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-8" style="height:600px;">
         <section class="menu p-4">
           <div class="row row-cols-4">
             <DrinkCard :drinks="drinks" @pass-drink="handleDrink"/>
@@ -192,11 +227,18 @@
         <section class="sugar p-2">
           <VolumePills :choice="volumeChoice[1]" @after-checked="handleChecked"/>
         </section>
-        <div class="text-end mt-4 mb-4">
+        <div class="text-end mt-4">
           <div class="btn btn-light" style="min-width:120px;" @click="addBill">Add</div>
         </div>
       </div>
-    </div>  
+    </div>
+    <Transition>
+      <CheckoutModal 
+        :total="total" 
+        v-if="isShowModal"
+        @pass-submit-modal="handleSubmitModal"
+      />
+    </Transition>
   </main>
 </template>
 
@@ -213,6 +255,7 @@
   .container {
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 3px;
+    position: relative;
   }
 
   .container .row {
@@ -220,7 +263,28 @@
   }
 
   .col-md-4 {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 580px;
+  }
+
+  .col-md-4::-webkit-scrollbar {
+    width: 5px;
+    background: transparent;
+  }
+
+  .col-md-4::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* modal transition設定 */
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
   }
 </style>

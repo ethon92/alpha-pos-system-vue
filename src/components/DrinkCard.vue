@@ -6,10 +6,10 @@
     }
   })
 
-  const emit = defineEmits(['passDrink'])
+  const emits = defineEmits(['passDrink'])
 
   function selectDrink(e) {
-    emit('passDrink', e)
+    emits('passDrink', e)
   }
 </script>
 
