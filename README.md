@@ -18,11 +18,15 @@ https://github.com/ethon92/alpha-pos-system-vue.git
 ```
 cd alpha-pos-system-vue
 ```
-3. 啟動專案
+3. 安裝node_modules
+```
+npm install
+```
+4. 啟動專案
 ```
 npm run dev
 ```
-4. 開啟瀏覽器輸入 http://localhost:3000 即可進入alpha-pos-system-vue
+5. 開啟瀏覽器輸入 http://localhost:3000 即可進入alpha-pos-system-vue
 
 ## Using Tools - 使用工具
 
